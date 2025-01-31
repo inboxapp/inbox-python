@@ -33,6 +33,71 @@ class TestWebhooks:
         assert webhook.created_at == 1234567890
         assert webhook.updated_at == 1234567890
 
+    def test_webhook_deserialization_all(self, http_client):
+        trigger_types = [
+            "booking.created",
+            "booking.pending",
+            "booking.rescheduled",
+            "booking.cancelled",
+            "booking.reminder",
+            "calendar.created",
+            "calendar.updated",
+            "calendar.deleted",
+            "contact.updated",
+            "contact.deleted",
+            "event.created",
+            "event.updated",
+            "event.deleted",
+            "grant.created",
+            "grant.updated",
+            "grant.deleted",
+            "grant.expired",
+            "message.send_success",
+            "message.send_failed",
+            "message.bounce_detected",
+            "message.created",
+            "message.updated",
+            "message.opened",
+            "message.link_clicked",
+            "message.opened.legacy",
+            "message.link_clicked.legacy",
+            "message.intelligence.order",
+            "message.intelligence.tracking",
+            "message.intelligence.return",
+            "thread.replied",
+            "thread.replied.legacy",
+            "folder.created",
+            "folder.updated",
+            "folder.deleted"
+        ]
+
+        webhook_json = {
+            "id": "UMWjAjMeWQ4D8gYF2moonK4486",
+            "description": "Production webhook destination",
+            "trigger_types": trigger_types,
+            "webhook_url": "https://example.com/webhooks",
+            "status": "active",
+            "notification_email_addresses": ["jane@example.com", "joe@example.com"],
+            "status_updated_at": 1234567890,
+            "created_at": 1234567890,
+            "updated_at": 1234567890,
+        }
+
+        webhook = Webhook.from_dict(webhook_json)
+
+        assert webhook.id == "UMWjAjMeWQ4D8gYF2moonK4486"
+        assert webhook.description == "Production webhook destination"
+        assert webhook.trigger_types == trigger_types
+        assert webhook.webhook_url == "https://example.com/webhooks"
+        assert webhook.status == "active"
+        assert webhook.notification_email_addresses == [
+            "jane@example.com",
+            "joe@example.com",
+        ]
+        assert webhook.status_updated_at == 1234567890
+        assert webhook.created_at == 1234567890
+        assert webhook.updated_at == 1234567890
+
     def test_list_webhooks(self, http_client_list_response):
         webhooks = Webhooks(http_client_list_response)
 
